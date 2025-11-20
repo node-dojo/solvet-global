@@ -1,0 +1,33 @@
+{
+  "name": "solvet-cli",
+  "version": "1.0.0-beta",
+  "description": "SOLVET System Command Line Interface - Streamline your digital product workflow",
+  "main": "src/index.js",
+  "bin": {
+    "solve": "./bin/solve"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "solvet",
+    "cli",
+    "digital-products",
+    "polar",
+    "github",
+    "workflow"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^11.1.0",
+    "chalk": "^4.1.2",
+    "inquirer": "^9.2.12",
+    "fs-extra": "^11.2.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
+

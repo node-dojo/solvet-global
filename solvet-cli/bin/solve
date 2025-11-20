@@ -1,0 +1,29 @@
+#!/usr/bin/env node
+
+/**
+ * SOLVET CLI Entry Point
+ * 
+ * Usage: solve <command> [options]
+ */
+
+const path = require('path');
+const { spawn } = require('child_process');
+
+// Get the path to the main CLI script
+const cliPath = path.join(__dirname, '../src/index.js');
+
+// Spawn the Node.js process
+const child = spawn('node', [cliPath, ...process.argv.slice(2)], {
+  stdio: 'inherit',
+  cwd: process.cwd()
+});
+
+child.on('error', (error) => {
+  console.error('Error:', error.message);
+  process.exit(1);
+});
+
+child.on('exit', (code) => {
+  process.exit(code || 0);
+});
+

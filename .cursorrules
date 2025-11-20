@@ -1,0 +1,74 @@
+# SOLVET System - Cursor Rules
+
+This file helps Claude understand how to work with the SOLVET system.
+
+## System Overview
+
+SOLVET is a multi-repository system for managing digital products:
+- `no3d-tools-library/` - Product assets (private repo)
+- `no3d-tools-website/` - Public website (public repo)
+- `solvet-system/` - Shared schemas and templates
+- `no3d-tools-addon/` - Blender add-on
+
+## Command Patterns
+
+When users ask to manage products, use these patterns:
+
+### Product Management
+- "List products" → Scan `no3d-tools-library/Dojo*/` folders, show file status
+- "Create product [name]" → Create folder, JSON template, show next steps
+- "Validate [product]" → Check for .blend, .json, icon files
+- "Update [product] price" → Edit JSON metadata file
+
+### Repository Management
+- "Check repo status" → Run `status-all.sh` or check git status
+- "Update repos" → Run `update-all.sh` or git pull
+- "Commit [repo]" → Stage, commit with message
+- "Push [repo]" → Push to remote
+
+### Sync Operations
+- "Sync to Polar" → Trigger GitHub Actions or run sync script
+- "Sync to website" → Trigger image sync workflow
+- "Sync all" → Trigger both workflows
+
+### Validation
+- "Validate all" → Check all products for required files
+- "Check metadata" → Validate JSON files against schema
+
+## File Locations
+
+- Products: `no3d-tools-library/Dojo*/`
+- Website: `no3d-tools-website/`
+- Scripts: `scripts/` and `no3d-tools-library/scripts/`
+- Templates: `solvet-system/templates/`
+- Schemas: `solvet-system/schemas/`
+
+## Workflow Rules
+
+1. Always validate before syncing
+2. Check git status before committing
+3. Use existing scripts when available
+4. Show what will change before destructive operations
+5. Provide clear next steps after operations
+
+## Natural Language Commands
+
+Users can ask in natural language. Interpret and execute:
+- "Show me all products" → List products
+- "Create a new product called X" → Create product workflow
+- "What's the status?" → Check repos and products
+- "Sync everything" → Full sync workflow
+
+## Slash Commands
+
+Users can also use slash commands for quick actions:
+- `/products` → List all products
+- `/product create <name>` → Create new product
+- `/status` → System status overview
+- `/sync all` → Sync to Polar and website
+- `/validate` → Validate all products
+- `/repo status` → Check repository status
+
+See SLASH_COMMANDS.md for complete slash command reference.
+See CURSOR_COMMANDS.md for natural language command reference.
+

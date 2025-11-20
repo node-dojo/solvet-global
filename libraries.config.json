@@ -1,0 +1,150 @@
+{
+  "libraries": [
+    {
+      "id": "no3d-tools",
+      "displayName": "NO3D Tools",
+      "description": "Blender tools and add-ons library",
+      "enabled": true,
+      "type": "product-catalog",
+      "paths": {
+        "library": "no3d-tools-library",
+        "website": "no3d-tools-website"
+      },
+      "github": {
+        "owner": "node-dojo",
+        "repo": "no3d-tools-library",
+        "branch": "main"
+      },
+      "products": {
+        "folderPrefix": "Dojo",
+        "namespace": "no3d_tools",
+        "iconPattern": "icon_{name}.png"
+      },
+      "productTypes": [
+        "Blender Add-on",
+        "Geometry Node",
+        "Material",
+        "Asset Pack",
+        "Shader",
+        "Modifier"
+      ],
+      "requiredFields": ["title", "description", "price"],
+      "metafieldKeys": [
+        "blender_version",
+        "category",
+        "thumbnail",
+        "changelog",
+        "compatibility",
+        "install_instructions"
+      ],
+      "polar": {
+        "enabled": true,
+        "syncOnChange": true
+      },
+      "ui": {
+        "primaryColor": "#007bff",
+        "tabIcon": "🛠️"
+      }
+    },
+    {
+      "id": "no3d-not3s",
+      "displayName": "NO3D Not3s",
+      "description": "Blog posts and articles library",
+      "enabled": true,
+      "type": "blog",
+      "paths": {
+        "library": "no3d-not3s-library",
+        "website": "no3d-not3s-website"
+      },
+      "github": {
+        "owner": "node-dojo",
+        "repo": "no3d-not3s-library",
+        "branch": "main"
+      },
+      "products": {
+        "folderPrefix": "Post",
+        "namespace": "no3d_not3s",
+        "iconPattern": "thumbnail_{name}.png"
+      },
+      "productTypes": [
+        "Blog Post",
+        "Tutorial",
+        "News Article",
+        "Video Content",
+        "Release Note"
+      ],
+      "requiredFields": ["title", "description", "published_date"],
+      "metafieldKeys": [
+        "author",
+        "publish_date",
+        "category",
+        "tags",
+        "thumbnail",
+        "featured",
+        "read_time",
+        "video_url"
+      ],
+      "polar": {
+        "enabled": false,
+        "syncOnChange": false
+      },
+      "ui": {
+        "primaryColor": "#28a745",
+        "tabIcon": "📝"
+      }
+    },
+    {
+      "id": "no3d-prints",
+      "displayName": "NO3D Prints",
+      "description": "3D printable models library",
+      "enabled": false,
+      "type": "product-catalog",
+      "paths": {
+        "library": "no3d-prints-library",
+        "website": "no3d-prints-website"
+      },
+      "github": {
+        "owner": "node-dojo",
+        "repo": "no3d-prints-library",
+        "branch": "main"
+      },
+      "products": {
+        "folderPrefix": "Print",
+        "namespace": "no3d_prints",
+        "iconPattern": "preview_{name}.png"
+      },
+      "productTypes": [
+        "STL Model",
+        "3MF Model",
+        "Print Profile",
+        "Multi-Part Set",
+        "Supports Included"
+      ],
+      "requiredFields": ["title", "description", "price"],
+      "metafieldKeys": [
+        "print_time",
+        "material_type",
+        "supports_required",
+        "infill_percentage",
+        "layer_height",
+        "file_format",
+        "dimensions",
+        "assembly_required"
+      ],
+      "polar": {
+        "enabled": true,
+        "syncOnChange": true
+      },
+      "ui": {
+        "primaryColor": "#dc3545",
+        "tabIcon": "🖨️"
+      }
+    }
+  ],
+  "defaults": {
+    "activeLibrary": "no3d-tools",
+    "showDisabledLibraries": false,
+    "autoSyncToGithub": true,
+    "confirmBeforePush": true
+  }
+}
