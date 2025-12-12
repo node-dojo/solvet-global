@@ -16,3 +16,6 @@
 [submodule "no3d-not3s-library"]
 	path = no3d-not3s-library
 	url = https://github.com/node-dojo/no3d-not3s-library.git
+[submodule "co-aug-dashboard"]
+	path = co-aug-dashboard
+	url = https://github.com/node-dojo/co-aug-dashboard.git
