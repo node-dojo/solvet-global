@@ -5,18 +5,35 @@
  *
  * Automatically generates checkout links for each product in Polar,
  * enabling customers to access free products without manual setup.
+ * 
+ * Requires .env file with:
+ *   POLAR_API_TOKEN=xxx
+ *   POLAR_ORG_ID=xxx
  */
 
+// Load environment variables from .env file
+require('dotenv').config();
+
 const { Polar } = require('@polar-sh/sdk');
+
+const { validateEnvVars, logTokenInfo, sanitizeError } = require('./utils/security');
 
 const POLAR_API_TOKEN = process.env.POLAR_API_TOKEN;
 const POLAR_ORG_ID = process.env.POLAR_ORG_ID;
 const DRY_RUN = process.env.DRY_RUN === 'true';
 
-if (!POLAR_API_TOKEN || !POLAR_ORG_ID) {
-  console.error('Error: POLAR_API_TOKEN and POLAR_ORG_ID required');
+// Validate required environment variables
+try {
+  validateEnvVars(['POLAR_API_TOKEN', 'POLAR_ORG_ID']);
+} catch (error) {
+  console.error('❌ Error:', error.message);
+  console.error('\nPlease ensure .env file exists with POLAR_API_TOKEN and POLAR_ORG_ID');
+  console.error('Or set environment variables: POLAR_API_TOKEN=xxx POLAR_ORG_ID=xxx node scripts/create-checkout-links.js');
   process.exit(1);
 }
+
+// Log token info (masked)
+logTokenInfo('POLAR_API_TOKEN', POLAR_API_TOKEN);
 
 const polar = new Polar({ accessToken: POLAR_API_TOKEN });
 

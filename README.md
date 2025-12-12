@@ -1,117 +1,104 @@
 # SOLVET Global - Multi-Repository Digital Asset Publishing System
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen)](https://nodejs.org/)
+[![Security Policy](https://img.shields.io/badge/Security-Policy-blue.svg)](SECURITY.md)
+
 **SOLVET** (Solve Et Coagula) is an end-to-end workflow system for publishing Blender digital assets from creation to e-commerce. The system coordinates multiple repositories to automate the complete publishing pipeline.
 
 ## 🎯 System Overview
 
 SOLVET Global is a multi-repository workspace that manages the complete lifecycle of digital assets:
 
-1. **Asset Creation** - Blender add-on exports assets with metadata
-2. **Asset Storage** - GitHub repository serves as the database
-3. **E-commerce Website** - Static site displays products and handles checkout
-4. **Payment Processing** - Polar.sh integration for payments and file hosting
-5. **Automation** - GitHub Actions syncs data across all components
+### 🚀 Full Digital Asset Life Cycle: Management, Publishing & E-Commerce
+
+1. **Asset Creation** – Blender add-on exports assets with metadata  
+2. **Asset Management** – Local CO-AUG dashboard for editing, validation, and structuring  
+3. **Asset Storage** – GitHub repositories serve as versioned asset libraries  
+4. **Automated Asset Publishing** – GitHub Actions sync and deploy assets to the website  
+5. **Asset Selling & Delivery** – Website e-commerce framework handles product listing, checkout, access, and delivery  
 
 ## 🏗️ Architecture
 
 ```mermaid
-graph TB
-    subgraph "COMPONENT 1: Asset Creation"
-        A[Blender 4.5+]
-        B[Send NO3DS Export Utility<br/>Python Add-on]
-        A -->|Artist creates asset| B
-        B -->|Exports| C[.blend file]
-        B -->|Generates| D[.json metadata]
-        B -->|Creates| E[.png thumbnails]
+graph LR
+    subgraph "1. Asset Creation"
+        A[Blender 4.5+<br/>Asset Creation]
+        B[SOLVET Asset Management Add-on<br/>Internal Export Tool]
+        I1[Local Folders<br/>& Files]
+        I2[Other Sources...]
+    end
+    
+    subgraph "2. Asset Management"
+        D[CO-AUG Dashboard<br/>Asset Editing & Creation]
+        C[Product Structure<br/>& Metadata]
+    end
+    
+    subgraph "3. Storage"
+        E1[no3d-tools-library<br/>Blender Asset Library]
+        E2[no3d-prints-library<br/>3D Printable Files]
+        E3[no3d-notes-library<br/>Educational Content<br/>Project Documentation]
+        E4[no3d-cod3-library<br/>Vibe Coding Projects]
+    end
+    
+    subgraph "4. Automated Asset Publishing"
+        F{Automated Publishing<br/>via GitHub Actions}
+        G((Website<br/>Patreon<br/>Gumroad<br/>Shopify))
+    end
+    
+    subgraph "5. Asset Selling & Delivery"
+        O1[Blender Assets]
+        O2[3D Printable Files]
+        O3[Educational Content]
+        O4[Coding Projects]
+        H((Happy no3d member))
     end
 
-    subgraph "COMPONENT 2: GitHub Repository Database"
-        F[no3d-tools-library repo<br/>GitHub]
-        C --> F
-        D --> F
-        E --> F
-        G[JSON Schema Validation<br/>Python scripts]
-        F --> G
-    end
-
-    subgraph "COMPONENT 3: Management Dashboard"
-        H[Electron Desktop App]
-        I[Express Server :3000<br/>Node.js]
-        J[Product Dashboard UI<br/>HTML/JS]
-        H --> I
-        I --> J
-        J -->|Edit products| I
-    end
-
-    subgraph "COMPONENT 4: E-Commerce Platform"
-        K[Polar.sh]
-        L[Product Management]
-        M[Payment Processing]
-        N[File Hosting<br/>.blend downloads]
-        K --> L
-        K --> M
-        K --> N
-    end
-
-    subgraph "COMPONENT 5: Website"
-        O[no3d-tools-website<br/>Vercel]
-        P[index.html<br/>Static HTML5]
-        Q[script.js<br/>Vanilla JS]
-        R[styles.css<br/>Minimal Design]
-        S[polar-products.js<br/>Price ID Mappings]
-        O --> P
-        P --> Q
-        P --> R
-        Q --> S
-    end
-
-    subgraph "COMPONENT 6: Automation"
-        T[GitHub Actions]
-        U[Content Sync Workflow]
-        V[Price Update Workflow]
-        W[Validation Workflow]
-        T --> U
-        T --> V
-        T --> W
-    end
-
-    %% Main Data Flow
-    F -->|GitHub API| O
-    F -->|Read products| I
-    I -->|Sync to| K
-    I -->|Push changes| F
-    I -->|Regenerate| S
-    K -->|Price IDs| S
-    O -->|Fetch prices| K
-    F -->|Trigger| T
-    T -->|Deploy| O
-    T -->|Sync products| K
-
-    %% Customer Flow
-    X[Customer]
-    X -->|Visit| O
-    O -->|Browse products| X
-    X -->|Click Download| Y[Polar Checkout SDK]
-    Y -->|Open modal| K
-    K -->|Process payment| Z[Customer Account]
-    Z -->|Receive link| N
+    A -->|Creates Assets| B
+    B -->|Exports| D
+    I1 -->|Imports| D
+    I2 -->|Imports| D
+    D -->|Validates, Structures,<br/>Manages & Edits| C
+    C -->|Stored in| E1
+    C -->|Stored in| E2
+    C -->|Stored in| E3
+    C -->|Stored in| E4
+    E1 --> F
+    E2 --> F
+    E3 --> F
+    E4 --> F
+    F --> G
+    G -->|Polar| O1
+    G -->|Thangs? tbd| O2
+    G -->|tbd| O3
+    G -->|tbd| O4
+    O1 --> H
+    O2 --> H
+    O3 --> H
+    O4 --> H
 
     %% Styling
     classDef blender fill:#EA7600,stroke:#333,stroke-width:2px,color:#fff
-    classDef github fill:#333,stroke:#666,stroke-width:2px,color:#fff
+    classDef addon fill:#FF6B6B,stroke:#333,stroke-width:2px,color:#fff
+    classDef input fill:#E67E22,stroke:#333,stroke-width:2px,color:#fff
+    classDef metadata fill:#9B59B6,stroke:#333,stroke-width:2px,color:#fff
     classDef dashboard fill:#2E86AB,stroke:#333,stroke-width:2px,color:#fff
-    classDef polar fill:#8B5CF6,stroke:#333,stroke-width:2px,color:#fff
-    classDef website fill:#F0FF00,stroke:#333,stroke-width:2px,color:#000
-    classDef automation fill:#059669,stroke:#333,stroke-width:2px,color:#fff
-    classDef customer fill:#DC2626,stroke:#333,stroke-width:2px,color:#fff
+    classDef repo fill:#333,stroke:#666,stroke-width:2px,color:#fff
+    classDef automation fill:#F0FF00,stroke:#333,stroke-width:2px,color:#000
+    classDef platform fill:#F0FF00,stroke:#333,stroke-width:2px,color:#000
+    classDef output fill:#3498DB,stroke:#333,stroke-width:2px,color:#fff
+    classDef user fill:#27AE60,stroke:#333,stroke-width:2px,color:#fff
 
-    class A,B,C,D,E blender
-    class F,G github
-    class H,I,J dashboard
-    class K,L,M,N polar
-    class O,P,Q,R,S website
-    class T,U,V,W automation
-    class X,Y,Z customer
+    class A blender
+    class B addon
+    class I1,I2 input
+    class C metadata
+    class D dashboard
+    class E1,E2,E3,E4 repo
+    class F automation
+    class G platform
+    class O1,O2,O3,O4 output
+    class H user
 ```
 
 ## 📦 Repository Structure
@@ -131,29 +118,40 @@ SOLVET Global coordinates multiple repositories:
   - Integrates Polar.sh checkout SDK
   - Live at: https://no3dtools.com
 
-- **`no3d-tools-addon/`** - Blender add-on (GitHub: `node-dojo/no3d-tools-addon`)
-  - Python add-on for Blender 4.5+
-  - Exports assets with metadata to repository structure
+- **`solvet-asset-management-addon/`** - SOLVET Asset Management Add-on (GitHub: internal repository)
+  - Internal Blender add-on for Blender 4.5+
+  - Exports assets with metadata to repository structure (part of SOLVET workflow)
   - Generates JSON, thumbnails, and organized folders
+- **`no3d-tools-addon/`** - NO3D Tools Asset Library (GitHub: `node-dojo/no3d-tools-addon`)
+  - Customer-facing Blender add-on for Blender 4.5+
+  - Imports/consumes assets from the library (product offering)
+  - Provides subscription-based access to asset libraries
 
 - **`solvet-system/`** - Shared resources (GitHub: `node-dojo/solvet-system`)
   - JSON schemas for product metadata validation
   - Templates and scripts
   - Documentation and architecture guides
 
+- **`co-aug-dashboard/`** - CO-AUG Dashboard (GitHub: `node-dojo/co-aug-dashboard`)
+  - Electron desktop application for managing products
+  - Primary interface for editing product metadata and files
+  - Integrated git operations (replaces manual git workflow)
+  - Product validation and sync status monitoring
+  - Replaces older export/import workflows
+
 ### Additional Libraries
 
 - **`no3d-not3s-library/`** - Educational content library
 - **`no3d-prints-library/`** - 3D print assets library
-- **`solvet-cli/`** - Command-line interface for SOLVET operations
+- **`tools/solvet-cli/`** - Command-line interface for SOLVET operations (deprecated)
 
 ## 🔄 Workflow
 
 ### 1. Asset Creation & Export
 
-**Blender Add-on** (`no3d-tools-addon/`)
+**SOLVET Asset Management Add-on** (internal, `solvet-asset-management-addon/`)
 - Artist creates asset in Blender 4.5+
-- Uses "Send NO3DS Export Utility" add-on
+- Internal tool for exporting assets (part of SOLVET workflow)
 - Exports to `no3d-tools-library/` repository:
   - `.blend` file (main asset)
   - `.json` metadata (validated against schema)
@@ -176,7 +174,18 @@ SOLVET Global coordinates multiple repositories:
 - Automated validation ensures schema compliance
 - GitHub serves as the database (Git as version control)
 
-### 3. Website Display
+### 3. Product Management (CO-AUG Dashboard)
+
+**CO-AUG Dashboard** (`co-aug-dashboard/`)
+- Primary interface for managing products
+- Edit product metadata, descriptions, and files
+- Direct git operations (commit, push) - replaces manual terminal commands
+- Real-time validation against SOLVET schemas
+- Sync status monitoring (Polar, website)
+- Product template creation
+- **Replaces older workflows:** No longer need export/import scripts - dashboard handles git operations directly
+
+### 4. Website Display
 
 **E-commerce Website** (`no3d-tools-website/`)
 - Fetches products from `no3d-tools-library` via GitHub API
@@ -187,7 +196,7 @@ SOLVET Global coordinates multiple repositories:
 - Integrates Polar.sh checkout for purchases
 - Deployed on Vercel with automatic updates
 
-### 4. E-commerce Integration
+### 5. E-commerce Integration
 
 **Polar.sh** (External Service)
 - Payment processing
@@ -195,7 +204,7 @@ SOLVET Global coordinates multiple repositories:
 - Customer account management
 - Product synchronization via API
 
-### 5. Automation
+### 6. Automation
 
 **GitHub Actions**
 - Content sync workflow: Updates website when repository changes
@@ -262,7 +271,8 @@ SOLVET GLOBAL/
 │   ├── script.js                 # Product loading logic
 │   ├── styles.css               # Design system styles
 │   └── api/                     # Serverless API functions
-├── no3d-tools-addon/            # Blender add-on (GitHub repo)
+├── solvet-asset-management-addon/  # Internal export add-on (GitHub repo)
+├── no3d-tools-addon/            # Customer asset library add-on (GitHub repo)
 │   ├── __init__.py              # Add-on entry point
 │   ├── operators.py             # Export operators
 │   └── utils.py                 # Utility functions
@@ -271,9 +281,21 @@ SOLVET GLOBAL/
 │   ├── templates/               # Product templates
 │   └── scripts/                 # Validation scripts
 ├── scripts/                     # Workspace utility scripts
-│   ├── update-all.sh            # Update all repos
-│   └── status-all.sh            # Check all repo status
-└── plan docs/                   # Architecture documentation
+│   ├── setup/                   # Setup scripts
+│   ├── maintenance/             # Maintenance utilities
+│   ├── sync/                    # Sync operations
+│   ├── utils/                   # General utilities
+│   └── dev/                     # Development tools
+├── docs/                        # Documentation
+│   ├── architecture/            # Architecture docs
+│   ├── guides/                  # How-to guides
+│   ├── planning/                # Planning documents
+│   └── api/                     # API documentation
+├── config/                      # Configuration files
+├── assets/                      # Static assets
+├── tests/                       # Test files
+├── tools/                       # Development tools
+└── archive/                     # Archived files
 ```
 
 ## 🎨 Design System
@@ -301,20 +323,17 @@ SOLVET GLOBAL/
 - **`update-all.sh`** - Pull latest changes from all repositories
 - **`status-all.sh`** - Check git status of all repositories
 
-### SOLVET CLI
+### SOLVET CLI (Deprecated)
 
-```bash
-cd solvet-cli
-npm install
-npm link
-solvet --help
-```
+The CLI has been replaced with Cursor/Claude natural language commands. See [docs/guides/](docs/guides/) for command reference.
+
+For reference, the CLI code is available in `tools/solvet-cli/` but is no longer maintained.
 
 ### Validation
 
 ```bash
 # Validate products in library
-python scripts/validate-products.py
+python scripts/utils/validate-products.py
 
 # Validate against schema
 python solvet-system/scripts/validate-products.py /path/to/product
@@ -322,12 +341,12 @@ python solvet-system/scripts/validate-products.py /path/to/product
 
 ## 📚 Documentation
 
-- **[QUICK_START.md](QUICK_START.md)** - Getting started guide
-- **[plan docs/MULTI_REPO_ARCHITECTURE.md](plan docs/MULTI_REPO_ARCHITECTURE.md)** - Architecture details
-- **[plan docs/SOLVET system PRD.md](plan docs/SOLVET system PRD.md)** - Product requirements
-- **[plan docs/REPOSITORY_STRUCTURE.md](plan docs/REPOSITORY_STRUCTURE.md)** - Repository organization
-- **[solvet-stack-diagram.md](solvet-stack-diagram.md)** - System architecture diagram
-- **[no3d-tools-website/VERCEL_DEPLOYMENT_SETUP.md](no3d-tools-website/VERCEL_DEPLOYMENT_SETUP.md)** - Deployment guide
+- **[docs/guides/quick-start.md](docs/guides/quick-start.md)** - Getting started guide
+- **[docs/planning/MULTI_REPO_ARCHITECTURE.md](docs/planning/MULTI_REPO_ARCHITECTURE.md)** - Architecture details
+- **[docs/planning/SOLVET system PRD.md](docs/planning/SOLVET system PRD.md)** - Product requirements
+- **[docs/planning/REPOSITORY_STRUCTURE.md](docs/planning/REPOSITORY_STRUCTURE.md)** - Repository organization
+- **[docs/architecture/stack-diagram.md](docs/architecture/stack-diagram.md)** - System architecture diagram
+- **[docs/README.md](docs/README.md)** - Documentation index
 
 ## 🔗 Integration Points
 
@@ -380,16 +399,55 @@ python solvet-system/scripts/validate-products.py /path/to/product
 - ⏳ Customer account features
 - ⏳ Analytics integration
 
+## 🔒 Security
+
+We take security seriously. Please review our [Security Policy](SECURITY.md) before reporting vulnerabilities.
+
+### Reporting Security Issues
+
+**Do NOT** open a public issue for security vulnerabilities. Instead:
+- Email security concerns privately, or
+- Create a private security advisory on GitHub
+
+See [SECURITY.md](SECURITY.md) for full details on our security policy and responsible disclosure process.
+
+### Security Best Practices
+
+- Never commit secrets, tokens, or API keys
+- Use environment variables for sensitive configuration
+- Mask tokens in logs (scripts automatically handle this)
+- Review dependencies regularly for vulnerabilities
+- Follow security guidelines in [CONTRIBUTING.md](CONTRIBUTING.md)
+
 ## 🤝 Contributing
 
-See individual repository READMEs for contribution guidelines:
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details on:
+
+- Development setup
+- Code style guidelines
+- Commit message conventions
+- Pull request process
+- Security practices
+
+### Quick Start for Contributors
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Commit with clear messages (see [CONTRIBUTING.md](CONTRIBUTING.md))
+5. Push to your branch (`git push origin feature/amazing-feature`)
+6. Open a Pull Request
+
+See individual repository READMEs for component-specific guidelines:
 - [no3d-tools-library/README.md](no3d-tools-library/README.md)
 - [no3d-tools-website/README.md](no3d-tools-website/README.md)
 - [no3d-tools-addon/README.md](no3d-tools-addon/README.md)
 
 ## 📄 License
 
-Part of the SOLVET System ecosystem. See individual repositories for specific licenses.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+Part of the SOLVET System ecosystem. Individual repositories may have their own licenses.
 
 ## 🔗 Links
 

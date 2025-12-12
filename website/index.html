@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="deployment-version" content="f6a218c">
+    <title>NO3D TOOLS</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Silka Mono font - using JetBrains Mono as alternative since Silka Mono requires license -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Visitor font - using Space Mono as closest alternative -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Marked.js for markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+    <!-- Three.js for 3D object viewing (low priority feature) -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <!-- Polar Embedded Checkout -->
+    <!-- Using official Polar CDN - exposes window.Polar.EmbedCheckout -->
+    <script src="https://cdn.jsdelivr.net/npm/@polar-sh/checkout@latest/dist/embed.global.js" defer></script>
+    <script>
+      // Debug: Check when Polar SDK loads
+      (function() {
+        function checkPolarSDK() {
+          // The SDK exposes window.Polar.EmbedCheckout
+          if (window.Polar && window.Polar.EmbedCheckout) {
+            console.log('✅ Polar SDK loaded!', window.Polar.EmbedCheckout);
+            return true;
+          }
+
+          // Log what's available for debugging
+          console.log('Checking for Polar SDK...');
+          console.log('window.Polar:', window.Polar);
+          console.log('All window keys with "polar":', Object.keys(window).filter(k => k.toLowerCase().includes('polar')));
+          return false;
+        }
+
+        // Check after script loads
+        window.addEventListener('load', function() {
+          if (!checkPolarSDK()) {
+            // Retry a few times in case script loads after window.load
+            let attempts = 0;
+            const retryInterval = setInterval(() => {
+              attempts++;
+              if (checkPolarSDK() || attempts > 10) {
+                clearInterval(retryInterval);
+              }
+            }, 200);
+          }
+        });
+      })();
+    </script>
+    <!-- Visitor font - self-hosted WOFF2 webfont -->
+    <!-- Preload Visitor font for better performance -->
+    <link rel="preload" href="./fonts/visitor.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    <!-- Visitor font @font-face declarations -->
+    <style>
+      @font-face {
+        font-family: 'Visitor';
+        src: url('./fonts/visitor.woff2') format('woff2');
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'Visitor';
+        src: url('./fonts/visitor.woff2') format('woff2');
+        font-weight: 700;
+        font-style: normal;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'Visitor TT1 BRK';
+        src: url('./fonts/visitor.woff2') format('woff2');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+      }
+    </style>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="site-container">
+        <!-- Site Header -->
+        <header class="site-header">
+            <button class="hamburger-menu-button" id="hamburger-menu-button" aria-label="Toggle menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="header-left">
+                <img src="assets/NO3D TOOLS.png" alt="NO3D TOOLS" class="logo" id="header-logo">
+            </div>
+            <div class="header-icons">
+                <a href="#" class="member-cta-button" id="member-cta-button">
+                    <img src="assets/blender_bit_icon.png" alt="Blender" class="member-cta-icon">
+                    <span class="member-cta-text">BECOME A MEMBER / GET ALL TOOLS, TUTORIALS, ASSETS</span>
+                </a>
+                <div class="cart-icon-wrapper" id="cart-icon-wrapper">
+                    <img src="assets/cart icon.png" alt="Shopping Cart" class="cart-icon-image" id="cart-icon">
+                    <span class="cart-badge" id="cart-badge">0</span>
+                </div>
+                <div class="account-menu-wrapper" id="account-menu-wrapper">
+                    <button class="header-icon account-menu-button" id="account-menu-button" aria-label="Account menu">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <div class="account-menu-dropdown" id="account-menu-dropdown">
+                        <div class="account-menu-header">
+                            <div class="account-menu-title">Account</div>
+                        </div>
+                        <div class="account-menu-content" id="account-menu-content">
+                            <div class="account-menu-loading">Loading account info...</div>
+                        </div>
+                        <div class="account-menu-footer">
+                            <a href="/account.html" class="account-menu-link" id="account-menu-link">Go to Account Page</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sidebar Backdrop (mobile only) -->
+        <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+        <!-- Left Sidebar Navigation -->
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-content" id="sidebar-content">
+                <!-- 3-tier sidebar structure will be generated by JavaScript -->
+            </div>
+        </nav>
+
+        <!-- Center Product Card - JSX Component Structure -->
+        <main class="product-card">
+            <div class="product-card-container">
+                <!-- Left Section: Product Image and Details -->
+                <div class="product-left-section">
+                    <!-- Product Image Carousel -->
+                    <div class="product-image-container">
+                        <div class="product-image-carousel">
+                            <button class="carousel-arrow carousel-arrow-left" id="carousel-arrow-left" aria-label="Previous image">
+                                <img src="assets/_1.png" alt="Previous">
+                            </button>
+                            <div class="carousel-viewport">
+                                <div class="carousel-track" id="carousel-track">
+                                    <!-- Carousel items will be dynamically inserted here -->
+                                </div>
+                            </div>
+                            <button class="carousel-arrow carousel-arrow-right" id="carousel-arrow-right" aria-label="Next image">
+                                <img src="assets/_.png" alt="Next">
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Product Details -->
+                    <div class="product-details">
+                        <!-- Top divider lines -->
+                        <div class="product-details-divider-top">
+                            <div class="divider-line-thick"></div>
+                            <div class="divider-line-thin"></div>
+                        </div>
+                        
+                        <div class="product-header-row">
+                            <h1 class="product-title" id="product-title">DOJO MESH REPAIR</h1>
+                            <div class="product-price-wrapper">
+                                <div class="product-price" id="product-price">PRICE: $7.99</div>
+                                <button class="download-button" id="download-button" style="display: none;">DOWNLOAD</button>
+                                <button class="buy-now-button" id="buy-now-button">BUY NOW</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Bottom divider line -->
+                        <div class="divider-line-thin"></div>
+                        
+                        <!-- Product Tags -->
+                        <div class="product-tags" id="product-tags">
+                            <span class="tags-label">Tags:</span>
+                            <span class="tags-list" id="tags-list"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Section: Tabs, Description, Changelog -->
+                <div class="product-right-section">
+                    <!-- Tab Navigation -->
+                    <div class="product-tabs">
+                        <div class="tab-container">
+                            <div class="tab-icon expanded" data-tab="description">
+                                <div class="tab-arrow">▼</div>
+                            </div>
+                            <div class="tab active" data-tab="description">DESCRIPTION</div>
+                        </div>
+                        <div class="tab-container">
+                            <div class="tab-icon collapsed" data-tab="docs">
+                                <div class="tab-arrow">▶</div>
+                            </div>
+                            <div class="tab" data-tab="docs">DOCS</div>
+                        </div>
+                    </div>
+
+                    <!-- Product Description -->
+                    <div class="product-description" id="product-description">
+                        <p>Professional mesh repair and optimization tool designed for 3D artists and engineers. Dojo Mesh Repair automatically detects and fixes common mesh issues including holes, non-manifold edges, overlapping faces, and inverted normals.</p>
+                        <p>&nbsp;</p>
+                        <p>With its intelligent algorithms, the tool preserves the original geometry while ensuring watertight meshes suitable for 3D printing, rendering, and simulation. Save hours of manual cleanup with automated repair processes that maintain the artistic integrity of your models.</p>
+                    </div>
+
+                    <!-- Changelog Section -->
+                    <div class="changelog-section">
+                        <div class="changelog-header">
+                            <div class="changelog-icon expanded">
+                                <div class="changelog-arrow">▼</div>
+                            </div>
+                            <span class="changelog-title" id="changelog-title">CHANGELOG</span>
+                        </div>
+                        <div class="changelog-content">
+                            <ul id="changelog-list">
+                                <!-- Changelog items will be populated from product JSON data -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Horizontal Scrolling Icon Grid (Tools Section Only) -->
+        <div class="horizontal-icon-grid-container" id="horizontal-icon-grid-container">
+            <div class="horizontal-icon-grid" id="horizontal-icon-grid">
+                <!-- Icons will be populated by JavaScript when Tools section is active -->
+            </div>
+        </div>
+
+        <!-- Right Icon Grid -->
+        <!-- Icons are dynamically generated from GitHub repository -->
+        <aside class="icon-grid">
+            <!-- Icon items will be populated by JavaScript from no3d-tools-library repository -->
+        </aside>
+    </div>
+
+    <!-- Mobile Footer CTA (above search bar, mobile only) -->
+    <div class="mobile-footer-cta" id="mobile-footer-cta">
+        <a href="#" class="mobile-member-cta-button" id="mobile-member-cta-button">
+            <img src="assets/blender_bit_icon.png" alt="Blender" class="mobile-member-cta-icon">
+            <span class="mobile-member-cta-text">BECOME A MEMBER / GET ALL TOOLS, TUTORIALS, ASSETS</span>
+        </a>
+    </div>
+
+    <!-- Mobile Search Bar (bottom of screen, mobile only) -->
+    <div class="mobile-search-bar" id="mobile-search-bar">
+        <input type="text" class="mobile-search-input" id="mobile-search-input" placeholder="SEARCH TOOLS..." aria-label="Search tools">
+        <button class="mobile-search-button" id="mobile-search-button" aria-label="Search">
+            <i class="fas fa-search"></i>
+        </button>
+    </div>
+
+    <footer class="footer">
+        <span class="footer-text" id="footer-text">Cmd/ctrl + K to Search</span>
+        <span class="footer-text" id="footer-commit">Commit: <span id="commit-hash">-</span></span>
+        <img src="assets/stone logo.png" alt="Stone Logo" class="footer-logo">
+    </footer>
+
+    <!-- Command Palette Search Modal -->
+    <div class="search-modal-backdrop" id="search-modal-backdrop"></div>
+    <div class="search-modal" id="search-modal">
+        <div class="search-modal-container">
+            <div class="search-modal-header">
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    id="search-input" 
+                    placeholder="Search products, descriptions, categories..."
+                    autocomplete="off"
+                >
+            </div>
+            <div class="search-results-container" id="search-results-container">
+                <div class="search-results-empty" id="search-results-empty">
+                    <span>No results found</span>
+                </div>
+            </div>
+            <div class="search-modal-footer">
+                <span class="search-hint">
+                    <span class="search-key">↑↓</span> Navigate
+                    <span class="search-key">↵</span> Select
+                    <span class="search-key">Esc</span> Close
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shopping Cart Modal -->
+    <div class="cart-modal-backdrop" id="cart-modal-backdrop"></div>
+    <div class="cart-modal" id="cart-modal">
+        <div class="cart-modal-container">
+            <div class="cart-modal-header">
+                <h2 class="cart-title">SHOPPING CART</h2>
+                <button class="cart-close-button" id="cart-close-button" aria-label="Close cart">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="cart-items-container" id="cart-items-container">
+                <div class="cart-empty" id="cart-empty">
+                    <span class="cart-empty-text">Your cart is empty</span>
+                    <span class="cart-empty-hint">Add products to your cart to get started</span>
+                </div>
+            </div>
+            <div class="cart-modal-footer" id="cart-footer">
+                <div class="cart-total-container">
+                    <span class="cart-total-label">TOTAL:</span>
+                    <span class="cart-total-amount" id="cart-total-amount">$0.00</span>
+                </div>
+                <div class="cart-action-buttons">
+                    <button class="cart-continue-shopping-button" id="cart-continue-shopping-button">
+                        CONTINUE SHOPPING
+                    </button>
+                    <button class="cart-checkout-button" id="cart-checkout-button" disabled>
+                        CHECK OUT
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="checkout-modal-backdrop" id="checkout-modal-backdrop"></div>
+    <div class="checkout-modal" id="checkout-modal">
+        <div class="checkout-modal-container">
+            <div class="checkout-modal-header">
+                <h2 class="checkout-title">CHECKOUT</h2>
+                <button class="checkout-close-button" id="checkout-close-button" aria-label="Close checkout">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="checkout-content-container" id="checkout-content-container">
+                <div class="checkout-loading" id="checkout-loading">
+                    <span class="checkout-loading-text">Loading checkout...</span>
+                </div>
+                <div class="checkout-error" id="checkout-error" style="display: none;">
+                    <span class="checkout-error-text">Unable to load checkout modal. Redirecting to checkout page...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Landing Pop-up Modal -->
+    <div class="landing-popup-backdrop" id="landing-popup-backdrop"></div>
+    <div class="landing-popup-modal" id="landing-popup-modal">
+        <div class="landing-popup-container">
+            <div class="landing-popup-content">
+                <!-- Main Content -->
+                <div class="landing-popup-body">
+                    <h2 class="landing-popup-title">WELCOME TO<br>NO3D TOOLS</h2>
+                    <h3 class="landing-popup-subheader">There are 2 ways to shop!</h3>
+                    
+                    <!-- Two Column Shopping Options -->
+                    <div class="landing-popup-shopping-options">
+                        <!-- Individual Purchase Column -->
+                        <div class="landing-popup-option-column">
+                            <h4 class="landing-popup-option-header">Get each asset you want individually</h4>
+                            <ul class="landing-popup-option-benefits">
+                                <li class="landing-popup-option-benefit">
+                                    <span class="landing-popup-benefit-icon">✓</span>
+                                    <span class="landing-popup-benefit-text">Purchase only what you need</span>
+                                </li>
+                                <li class="landing-popup-option-benefit">
+                                    <span class="landing-popup-benefit-icon">✓</span>
+                                    <span class="landing-popup-benefit-text">Own assets forever</span>
+                                </li>
+                                <li class="landing-popup-option-benefit">
+                                    <span class="landing-popup-benefit-icon">✓</span>
+                                    <span class="landing-popup-benefit-text">No recurring fees</span>
+                                </li>
+                            </ul>
+                            <p class="landing-popup-option-price">Average cost of individual assets = <span class="landing-popup-price-value landing-popup-price-grey">$7.77</span></p>
+                        </div>
+                        
+                        <!-- Subscription Column -->
+                        <div class="landing-popup-option-column">
+                            <h4 class="landing-popup-option-header">Join Now to get unlimited access to all assets, tutorials, tools and updates</h4>
+                            <ul class="landing-popup-option-benefits">
+                                <li class="landing-popup-option-benefit">
+                                    <span class="landing-popup-benefit-icon">✓</span>
+                                    <span class="landing-popup-benefit-text">Full library access</span>
+                                </li>
+                                <li class="landing-popup-option-benefit">
+                                    <span class="landing-popup-benefit-icon">✓</span>
+                                    <span class="landing-popup-benefit-text">All tutorials included</span>
+                                </li>
+                                <li class="landing-popup-option-benefit">
+                                    <span class="landing-popup-benefit-icon">✓</span>
+                                    <span class="landing-popup-benefit-text">Regular updates and new products</span>
+                                </li>
+                            </ul>
+                            <p class="landing-popup-option-price">Average cost of assets as a member = <span class="landing-popup-price-value landing-popup-price-green">$1.77</span></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="landing-popup-actions">
+                    <button class="landing-popup-button landing-popup-button-primary" id="landing-popup-subscribe-button">
+                        JOIN NOW
+                    </button>
+                    <button class="landing-popup-button landing-popup-button-secondary" id="landing-popup-browse-button">
+                        CONTINUE BROWSING
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vercel Analytics -->
+    <script defer src="https://cdn.vercel-insights.com/script.js"></script>
+    <script src="polar-products.js"></script>
+    <script type="module" src="script.js"></script>
+</body>
+</html>

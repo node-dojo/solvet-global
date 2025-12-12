@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOLVET Roadmap Tracker</title>
+    <link rel="stylesheet" href="roadmap.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+    <div class="top-bar">
+        <h1>SOLVET Roadmap Tracker</h1>
+        <div class="top-bar-controls">
+            <div class="filter-group">
+                <label for="tag-filter">Filter by Tag:</label>
+                <select id="tag-filter">
+                    <option value="">All Tags</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="status-filter">Filter by Status:</label>
+                <select id="status-filter">
+                    <option value="">All Status</option>
+                    <option value="planned">Planned</option>
+                    <option value="in-progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                    <option value="blocked">Blocked</option>
+                </select>
+            </div>
+            <button class="btn btn-secondary" id="export-btn">Export JSON</button>
+            <button class="btn btn-secondary" id="import-btn">Import JSON</button>
+            <input type="file" id="import-file" accept=".json" style="display: none;">
+        </div>
+    </div>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <ul class="section-nav" id="section-nav">
+                <!-- Sections will be populated by JavaScript -->
+            </ul>
+        </aside>
+
+        <main class="graph-container">
+            <div class="graph-wrapper">
+                <div id="roadmap-graph"></div>
+            </div>
+        </main>
+
+        <aside class="detail-panel" id="detail-panel">
+            <div class="detail-panel-header">
+                <h2 id="detail-title">Node Details</h2>
+                <button class="close-btn" id="close-panel">&times;</button>
+            </div>
+            <div id="detail-content">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+        </aside>
+    </div>
+
+    <script src="roadmap.js"></script>
+</body>
+</html>
+
+
+

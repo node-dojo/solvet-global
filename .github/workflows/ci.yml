@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  lint:
+    name: Lint and Validate
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: |
+          if [ -f package.json ]; then
+            npm ci
+          fi
+          if [ -f solvet-cli/package.json ]; then
+            cd solvet-cli && npm ci && cd ..
+          fi
+          if [ -f threejs-dev/package.json ]; then
+            cd threejs-dev && npm ci && cd ..
+          fi
+      
+      - name: Run linters
+        run: |
+          if [ -f package.json ] && npm run lint 2>/dev/null; then
+            npm run lint
+          fi
+          if [ -f threejs-dev/package.json ] && cd threejs-dev && npm run lint 2>/dev/null; then
+            cd threejs-dev && npm run lint
+          fi
+        continue-on-error: true
+      
+      - name: Check script syntax
+        run: |
+          find scripts -name "*.sh" -type f -exec bash -n {} \;
+        continue-on-error: true
+
+  security:
+    name: Security Checks
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+        continue-on-error: true
+      
+      - name: Upload Trivy results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+        continue-on-error: true
+

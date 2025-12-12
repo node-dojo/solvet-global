@@ -1,0 +1,153 @@
+{
+  "sections": {
+    "asset-creation": {
+      "name": "1. Asset Creation",
+      "nodes": {
+        "A": {
+          "id": "A",
+          "label": "Blender 4.5+ Asset Creation",
+          "status": "completed",
+          "tags": ["core", "blender"],
+          "notes": []
+        },
+        "B": {
+          "id": "B",
+          "label": "SOLVET Asset Management Add-on Internal Export Tool",
+          "status": "in-progress",
+          "tags": ["core", "addon"],
+          "notes": []
+        },
+        "I1": {
+          "id": "I1",
+          "label": "Local Folders & Files",
+          "status": "completed",
+          "tags": ["input"],
+          "notes": []
+        },
+        "I2": {
+          "id": "I2",
+          "label": "Other Sources...",
+          "status": "planned",
+          "tags": ["input"],
+          "notes": []
+        }
+      }
+    },
+    "asset-management": {
+      "name": "2. Asset Management",
+      "nodes": {
+        "D": {
+          "id": "D",
+          "label": "CO-AUG Dashboard Asset Editing & Creation",
+          "status": "in-progress",
+          "tags": ["dashboard", "core"],
+          "notes": []
+        },
+        "C": {
+          "id": "C",
+          "label": "Product Structure & Metadata",
+          "status": "completed",
+          "tags": ["metadata", "core"],
+          "notes": []
+        }
+      }
+    },
+    "storage": {
+      "name": "3. Storage",
+      "nodes": {
+        "E1": {
+          "id": "E1",
+          "label": "no3d-tools-library Blender Asset Library",
+          "status": "completed",
+          "tags": ["repo", "storage"],
+          "notes": []
+        },
+        "E2": {
+          "id": "E2",
+          "label": "no3d-prints-library 3D Printable Files",
+          "status": "planned",
+          "tags": ["repo", "storage"],
+          "notes": []
+        },
+        "E3": {
+          "id": "E3",
+          "label": "no3d-notes-library Educational Content Project Documentation",
+          "status": "planned",
+          "tags": ["repo", "storage"],
+          "notes": []
+        },
+        "E4": {
+          "id": "E4",
+          "label": "no3d-cod3-library Vibe Coding Projects",
+          "status": "planned",
+          "tags": ["repo", "storage"],
+          "notes": []
+        }
+      }
+    },
+    "automated-publishing": {
+      "name": "4. Automated Asset Publishing",
+      "nodes": {
+        "F": {
+          "id": "F",
+          "label": "Automated Publishing via GitHub Actions",
+          "status": "in-progress",
+          "tags": ["automation", "github"],
+          "notes": []
+        },
+        "G": {
+          "id": "G",
+          "label": "Website Patreon Gumroad Shopify",
+          "status": "in-progress",
+          "tags": ["platform", "e-commerce"],
+          "notes": []
+        }
+      }
+    },
+    "asset-selling-delivery": {
+      "name": "5. Asset Selling & Delivery",
+      "nodes": {
+        "O1": {
+          "id": "O1",
+          "label": "Blender Assets",
+          "status": "completed",
+          "tags": ["output", "delivery"],
+          "notes": []
+        },
+        "O2": {
+          "id": "O2",
+          "label": "3D Printable Files",
+          "status": "planned",
+          "tags": ["output", "delivery"],
+          "notes": []
+        },
+        "O3": {
+          "id": "O3",
+          "label": "Educational Content",
+          "status": "planned",
+          "tags": ["output", "delivery"],
+          "notes": []
+        },
+        "O4": {
+          "id": "O4",
+          "label": "Coding Projects",
+          "status": "planned",
+          "tags": ["output", "delivery"],
+          "notes": []
+        },
+        "H": {
+          "id": "H",
+          "label": "Happy no3d member",
+          "status": "completed",
+          "tags": ["user", "endpoint"],
+          "notes": []
+        }
+      }
+    }
+  },
+  "tags": ["core", "blender", "addon", "dashboard", "metadata", "repo", "storage", "automation", "github", "platform", "e-commerce", "output", "delivery", "user", "endpoint", "input"],
+  "statusOptions": ["planned", "in-progress", "completed", "blocked"]
+}
+
+
+

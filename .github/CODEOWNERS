@@ -1,0 +1,31 @@
+# Code owners for SOLVET Global repository
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Global owners
+* @node-dojo
+
+# Documentation
+/docs/ @node-dojo
+*.md @node-dojo
+
+# GitHub workflows and configuration
+/.github/ @node-dojo
+
+# Security files
+SECURITY.md @node-dojo
+/.github/workflows/secret-scanning.yml @node-dojo
+
+# Configuration files
+/.gitignore @node-dojo
+/.nvmrc @node-dojo
+/package.json @node-dojo
+/libraries.config.json @node-dojo
+
+# Scripts
+/scripts/ @node-dojo
+
+# Tools
+/tools/ @node-dojo
+/solvet-cli/ @node-dojo
+/threejs-dev/ @node-dojo
+

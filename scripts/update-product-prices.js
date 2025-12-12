@@ -4,18 +4,37 @@
  * Update Product Prices to $4.44
  *
  * Updates all products in Polar to have a fixed price of $4.44
+ * 
+ * Usage:
+ *   node scripts/update-product-prices.js
+ * 
+ * Requires .env file with:
+ *   POLAR_API_TOKEN=xxx
+ *   POLAR_ORG_ID=xxx
  */
 
+// Load environment variables from .env file
+require('dotenv').config();
+
 const { Polar } = require('@polar-sh/sdk');
+const { validateEnvVars, logTokenInfo, sanitizeError } = require('./utils/security');
 
 const POLAR_API_TOKEN = process.env.POLAR_API_TOKEN;
 const POLAR_ORG_ID = process.env.POLAR_ORG_ID;
 const NEW_PRICE = 444; // $4.44 in cents
 
-if (!POLAR_API_TOKEN || !POLAR_ORG_ID) {
-  console.error('Error: POLAR_API_TOKEN and POLAR_ORG_ID required');
+// Validate required environment variables
+try {
+  validateEnvVars(['POLAR_API_TOKEN', 'POLAR_ORG_ID']);
+} catch (error) {
+  console.error('❌ Error:', error.message);
+  console.error('\nPlease ensure .env file exists with POLAR_API_TOKEN and POLAR_ORG_ID');
+  console.error('Or set environment variables: POLAR_API_TOKEN=xxx POLAR_ORG_ID=xxx node scripts/update-product-prices.js');
   process.exit(1);
 }
+
+// Log token info (masked)
+logTokenInfo('POLAR_API_TOKEN', POLAR_API_TOKEN);
 
 const polar = new Polar({ accessToken: POLAR_API_TOKEN });
 
@@ -89,9 +108,15 @@ async function main() {
       console.log(`  ✓ Updated to $4.44`);
       updated++;
     } catch (error) {
-      console.error(`  ✗ Failed: ${error.message}`);
+      const safeMessage = sanitizeError(error);
+      console.error(`  ✗ Failed: ${safeMessage}`);
       if (error.body) {
-        console.error(`  Details:`, JSON.stringify(error.body, null, 2));
+        try {
+          const bodyStr = typeof error.body === 'string' ? error.body : JSON.stringify(error.body);
+          console.error(`  Details:`, sanitizeError(bodyStr));
+        } catch (e) {
+          console.error(`  Details: [Error details hidden for security]`);
+        }
       }
     }
   }
@@ -108,9 +133,12 @@ async function main() {
 }
 
 main().catch(error => {
-  console.error('Error:', error.message);
+  const safeMessage = sanitizeError(error);
+  console.error('❌ Error:', safeMessage);
   if (error.stack) {
-    console.error(error.stack);
+    // Sanitize stack trace too
+    const safeStack = sanitizeError(error.stack);
+    console.error(safeStack);
   }
   process.exit(1);
 });
