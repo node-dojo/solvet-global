@@ -1,4 +1,4 @@
-evaluate the browser or election app logs of the server
+evaluate the browser or election app console logs of the server
 debug found errors
-reevaluate the logs and look for errors
+reevaluate the console logs and look for errors
 debug found errors

@@ -348,3 +348,5 @@ if (require.main === module) {
 module.exports = { fetchPolarPrices, updateProductPrice, findProductDirs };
 
 
+
+

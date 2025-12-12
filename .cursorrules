@@ -72,3 +72,16 @@ Users can also use slash commands for quick actions:
 See SLASH_COMMANDS.md for complete slash command reference.
 See CURSOR_COMMANDS.md for natural language command reference.
 
+## Dashboard UI Rules (co-aug-dashboard)
+
+### Modal and Pop-up Backgrounds
+- **ALWAYS use `bg-white` (opaque white) for modal and pop-up content areas**
+- **NEVER use `bg-bg-primary` or semi-transparent backgrounds for modal content**
+- Backdrop overlays can be semi-transparent (e.g., `bg-black/80`), but the modal content itself must be fully opaque white
+- Context menus must also use `bg-white` for opaque backgrounds
+- This applies to all dialogs, modals, pop-ups, and overlay components
+
+### Examples
+- ✅ Correct: `className="bg-white border border-text-secondary ..."`
+- ❌ Wrong: `className="bg-bg-primary border border-text-secondary ..."`
+
