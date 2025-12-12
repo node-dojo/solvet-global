@@ -30,7 +30,7 @@
   },
   "homepage": "https://github.com/node-dojo/solvet-global#readme",
   "dependencies": {
-    "commander": "^11.1.0",
+    "commander": "^14.0.2",
     "chalk": "^4.1.2",
     "inquirer": "^9.2.12",
     "fs-extra": "^11.2.0"
