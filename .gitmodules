@@ -19,3 +19,6 @@
 [submodule "co-aug-dashboard"]
 	path = co-aug-dashboard
 	url = https://github.com/node-dojo/co-aug-dashboard.git
+[submodule ".claude/skills"]
+	path = .claude/skills
+	url = https://github.com/anthropics/skills.git
