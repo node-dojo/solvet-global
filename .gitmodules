@@ -1,24 +1,3 @@
-[submodule "no3d-prints-library"]
-	path = no3d-prints-library
-	url = https://github.com/node-dojo/no3d-prints-library.git
-[submodule "solvet-system"]
-	path = solvet-system
-	url = https://github.com/node-dojo/solvet-system.git
-[submodule "no3d-tools-website"]
-	path = no3d-tools-website
-	url = https://github.com/node-dojo/no3d-tools-website.git
-[submodule "no3d-tools-library"]
-	path = no3d-tools-library
-	url = https://github.com/node-dojo/no3d-tools-library.git
-[submodule "no3d-tools-addon"]
-	path = no3d-tools-addon
-	url = https://github.com/node-dojo/no3d-tools-addon.git
-[submodule "no3d-not3s-library"]
-	path = no3d-not3s-library
-	url = https://github.com/node-dojo/no3d-not3s-library.git
-[submodule "co-aug-dashboard"]
-	path = co-aug-dashboard
-	url = https://github.com/node-dojo/co-aug-dashboard.git
-[submodule ".claude/skills"]
-	path = .claude/skills
-	url = https://github.com/anthropics/skills.git
+[submodule "markdown-editor-web"]
+	path = markdown-editor-web
+	url = https://github.com/node-dojo/markdown-editor-web.git
